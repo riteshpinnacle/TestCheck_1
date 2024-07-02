@@ -9,14 +9,18 @@ import java.util.concurrent.TimeUnit
 
 interface ApiService {
     @POST("/index")
-    suspend fun fetchData(@Body request: Map<String, String>): List<ApiResponse>
+    suspend fun fetchData(@Body request: FetchDataRequest): List<ApiResponse>
+
+    @POST("/save_next")
+    suspend fun saveAnswer(@Body request: SaveAnswerRequest): SaveAnswerResponse
+
 }
 
 object RetrofitInstance {
     private val client = OkHttpClient.Builder()
-        .connectTimeout(30, TimeUnit.SECONDS) // Connection timeout
-        .readTimeout(30, TimeUnit.SECONDS)    // Read timeout
-        .writeTimeout(30, TimeUnit.SECONDS)   // Write timeout
+        .connectTimeout(3600, TimeUnit.SECONDS) // Connection timeout
+        .readTimeout(3600, TimeUnit.SECONDS)    // Read timeout
+        .writeTimeout(3600, TimeUnit.SECONDS)   // Write timeout
         .build()
 
     val api: ApiService by lazy {

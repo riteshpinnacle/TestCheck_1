@@ -22,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun DataScreen(viewModel: MainViewModel = viewModel()) {
     val data by viewModel.data.observeAsState(emptyList())
     val error by viewModel.error.observeAsState()
+    val saveAnswerResponse by viewModel.saveAnswerResponse.observeAsState()
 
     val details = data.flatMap { it.details }
 
@@ -48,9 +49,9 @@ fun DataScreen(viewModel: MainViewModel = viewModel()) {
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(16.dp)
                 )
-            } else if(details.isEmpty()){
-                CircularProgressIndicator(
-                )
+//            } else if(details.isEmpty()){
+//                CircularProgressIndicator(
+//                )
             }else {
                 val currentQuestion = details.find { it.question_id == currentQuestionId }
 
@@ -68,23 +69,55 @@ fun DataScreen(viewModel: MainViewModel = viewModel()) {
 
                             OptionItem(
                                 option = currentQuestion.option1,
+                                optionValue = "a",
                                 selectedOption = selectedOption,
-                                onSelectOption = { selectedOption = it }
+                                onSelectOption = { selectedOption = it
+//                                    viewModel.saveAnswer(
+//                                        paperId = currentQuestion.question_id,
+//                                        option = /*selectedOption*/  "a",
+//                                        subject = currentQuestion.subject_id,
+//                                        currentPaperId = currentQuestionId
+//                                    )
+                                }
                             )
                             OptionItem(
                                 option = currentQuestion.option2,
+                                optionValue = "b",
                                 selectedOption = selectedOption,
-                                onSelectOption = { selectedOption = it }
+                                onSelectOption = { selectedOption = it
+//                                    viewModel.saveAnswer(
+//                                        paperId = currentQuestion.question_id,
+//                                        option = /*selectedOption*/ "b",
+//                                        subject = currentQuestion.subject_id,
+//                                        currentPaperId = currentQuestionId
+//                                    )
+                                }
                             )
                             OptionItem(
                                 option = currentQuestion.option3,
+                                optionValue = "c",
                                 selectedOption = selectedOption,
-                                onSelectOption = { selectedOption = it }
+                                onSelectOption = { selectedOption = it
+//                                    viewModel.saveAnswer(
+//                                        paperId = currentQuestion.question_id,
+//                                        option = /*selectedOption*/ "c",
+//                                        subject = currentQuestion.subject_id,
+//                                        currentPaperId = currentQuestionId
+//                                    )
+                                }
                             )
                             OptionItem(
                                 option = currentQuestion.option4,
+                                optionValue = "d",
                                 selectedOption = selectedOption,
-                                onSelectOption = { selectedOption = it }
+                                onSelectOption = { selectedOption = it
+//                                    viewModel.saveAnswer(
+//                                        paperId = currentQuestion.question_id,
+//                                        option = /*selectedOption*/ "d",
+//                                        subject = currentQuestion.subject_id,
+//                                        currentPaperId = currentQuestionId
+//                                    )
+                                }
                             )
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -108,10 +141,17 @@ fun DataScreen(viewModel: MainViewModel = viewModel()) {
                                 if (currentQuestionId < details.maxOf { it.question_id }) {
                                     Button(
                                         onClick = {
+                                            viewModel.saveAnswer(
+                                                paperId = currentQuestion.question_id,
+                                                option = selectedOption.ifEmpty { "" },
+                                                subject = currentQuestion.subject_id,
+                                                currentPaperId = currentQuestionId
+                                            )
                                             currentQuestionId++
+                                            selectedOption = "" // Reset selected option for next question
                                         },
                                     ) {
-                                        Text("Next")
+                                        Text("Save and Next")
                                     }
                                 }
                             }
@@ -130,7 +170,7 @@ fun DataScreen(viewModel: MainViewModel = viewModel()) {
 }
 
 @Composable
-fun OptionItem(option: String, selectedOption: String, onSelectOption: (String) -> Unit) {
+fun OptionItem(option: String, optionValue: String, selectedOption: String, onSelectOption: (String) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -138,8 +178,8 @@ fun OptionItem(option: String, selectedOption: String, onSelectOption: (String) 
             .padding(vertical = 4.dp)
     ) {
         RadioButton(
-            selected = selectedOption == option,
-            onClick = { onSelectOption(option) }
+            selected = selectedOption == optionValue,
+            onClick = { onSelectOption(optionValue) }
         )
         HtmlText(html = option)
     }

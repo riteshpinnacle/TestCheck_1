@@ -35,4 +35,3 @@ fun HtmlText(html: String) {
         }
     )
 }
-
