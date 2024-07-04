@@ -20,7 +20,7 @@ class MainViewModel : ViewModel() {
     private val _saveAnswerResponse = MutableLiveData<SaveAnswerResponse?>()
     val saveAnswerResponse: LiveData<SaveAnswerResponse?> = _saveAnswerResponse
 
-    private val paperCode = "3228"
+    private val paperCode = "3227"
     private val emailId = "anshulji100@gmail.com"
     private val examModeId = "1"
     private val testSeriesId = "2"
@@ -62,7 +62,8 @@ class MainViewModel : ViewModel() {
         paperId: Int,
         option: String,
         subject: Int,
-        currentPaperId: Int
+        currentPaperId: Int,
+        remainingTime: String, // Added remainingTime parameter
     ) {
         viewModelScope.launch {
             try {
@@ -77,7 +78,8 @@ class MainViewModel : ViewModel() {
                         subject = subject,
                         CurrentPaperId = currentPaperId,
                         SaveType = "nxt",
-                        answer_status = "1"
+                        answer_status = "1",
+                        rTem = remainingTime // Set remaining time
                     )
                 )
                 _saveAnswerResponse.value = response

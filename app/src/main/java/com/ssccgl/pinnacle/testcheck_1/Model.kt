@@ -42,7 +42,7 @@ data class SaveAnswerRequest(
     val answer_status: String,
     val email_id: String,
 //    val SingleTm: String,
-//    val rTem: String,
+    val rTem: String,
     val test_series_id: String,
     val exam_mode_id: String,
     val subject: Int,
